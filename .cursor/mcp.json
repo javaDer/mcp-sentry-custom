@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "sentry": {
+      "command": "python",
+      "args": ["-m", "mcp_server_sentry", 
+      "--auth-token", "xxx",
+      "--project-slug", "xxx",
+      "--organization-slug", "xxx"
+    ]
+    }
+  }
+}
