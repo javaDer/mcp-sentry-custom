@@ -146,7 +146,7 @@ wheels = [
 ]
 
 [[package]]
-name = "mcp-server-sentry"
+name = "mcp-sentry"
 version = "0.6.2"
 source = { editable = "." }
 dependencies = [

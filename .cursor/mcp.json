@@ -2,7 +2,7 @@
   "mcpServers": {
     "sentry": {
       "command": "python",
-      "args": ["-m", "mcp_server_sentry", 
+      "args": ["-m", "mcp_sentry", 
       "--auth-token", "xxx",
       "--project-slug", "xxx",
       "--organization-slug", "xxx"

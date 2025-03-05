@@ -1,4 +1,4 @@
-# mcp-server-sentry: A Sentry MCP server
+# mcp-sentry: A Sentry MCP server
 
 ## Overview
 
@@ -47,14 +47,14 @@ A Model Context Protocol server for retrieving and analyzing issues from Sentry.
 ### Using uv (recommended)
 
 When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
-use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server-sentry*.
+use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-sentry*.
 
 ### Using PIP
 
-Alternatively you can install `mcp-server-sentry` via pip:
+Alternatively you can install `mcp-sentry` via pip:
 
 ```
-pip install mcp-server-sentry
+pip install mcp-sentry
 ```
 
 or use uv
@@ -65,7 +65,7 @@ uv pip install -e .
 After installation, you can run it as a script using:
 
 ```
-python -m mcp_server_sentry
+python -m mcp_sentry
 ```
 
 ## Configuration
@@ -81,7 +81,7 @@ Add this to your `claude_desktop_config.json`:
 "mcpServers": {
   "sentry": {
     "command": "uvx",
-    "args": ["mcp-server-sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
+    "args": ["mcp-sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
   }
 }
 ```
@@ -109,7 +109,7 @@ Add this to your `claude_desktop_config.json`:
 "mcpServers": {
   "sentry": {
     "command": "python",
-    "args": ["-m", "mcp_server_sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
+    "args": ["-m", "mcp_sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
   }
 }
 ```
@@ -124,10 +124,10 @@ Add to your Zed settings.json:
 
 ```json
 "context_servers": [
-  "mcp-server-sentry": {
+  "mcp-sentry": {
     "command": {
       "path": "uvx",
-      "args": ["mcp-server-sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
+      "args": ["mcp-sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
     }
   }
 ],
@@ -139,9 +139,9 @@ Add to your Zed settings.json:
 
 ```json
 "context_servers": {
-  "mcp-server-sentry": {
+  "mcp-sentry": {
     "command": "python",
-    "args": ["-m", "mcp_server_sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
+    "args": ["-m", "mcp_sentry", "--auth-token", "YOUR_SENTRY_TOKEN","--project-slug" ,"YOUR_PROJECT_SLUG", "--organization-slug","YOUR_ORGANIZATION_SLUG"]
   }
 },
 ```
@@ -156,7 +156,7 @@ Add to your Zed settings.json:
       "command": "python",
       "args": [
         "-m",
-        "mcp_server_sentry",
+        "mcp_sentry",
         "--auth-token",
         "YOUR_SENTRY_TOKEN",
         "--project-slug",
@@ -185,18 +185,18 @@ Add to your Zed settings.json:
 You can use the MCP inspector to debug the server. For uvx installations:
 
 ```
-npx @modelcontextprotocol/inspector uvx mcp-server-sentry --auth-token YOUR_SENTRY_TOKEN --project-slug YOUR_PROJECT_SLUG --organization-slug YOUR_ORGANIZATION_SLUG
+npx @modelcontextprotocol/inspector uvx mcp-sentry --auth-token YOUR_SENTRY_TOKEN --project-slug YOUR_PROJECT_SLUG --organization-slug YOUR_ORGANIZATION_SLUG
 ```
 
 Or if you've installed the package in a specific directory or are developing on it:
 
 ```
 cd path/to/servers/src/sentry
-npx @modelcontextprotocol/inspector uv run mcp-server-sentry --auth-token YOUR_SENTRY_TOKEN --project-slug YOUR_PROJECT_SLUG --organization-slug YOUR_ORGANIZATION_SLUG  
+npx @modelcontextprotocol/inspector uv run mcp-sentry --auth-token YOUR_SENTRY_TOKEN --project-slug YOUR_PROJECT_SLUG --organization-slug YOUR_ORGANIZATION_SLUG  
 ```
 or in term
 ```
-npx @modelcontextprotocol/inspector uv --directory /Volumes/ExtremeSSD/MCP/mcp-sentry/src run mcp_server_sentry --auth-token YOUR_SENTRY_TOKEN
+npx @modelcontextprotocol/inspector uv --directory /Volumes/ExtremeSSD/MCP/mcp-sentry/src run mcp_sentry --auth-token YOUR_SENTRY_TOKEN
 --project-slug YOUR_PROJECT_SLUG --organization-slug YOUR_ORGANIZATION_SLUG
 ```
 ![Inspector-tools](./images/Inspector-tools.png)

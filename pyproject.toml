@@ -1,5 +1,5 @@
 [project]
-name = "mcp-server-sentry"
+name = "mcp-sentry"
 version = "0.6.2"
 description = "MCP server for retrieving issues from sentry.io"
 readme = "README.md"
@@ -14,4 +14,4 @@ build-backend = "hatchling.build"
 dev-dependencies = ["pyright>=1.1.389", "pytest>=8.3.3", "ruff>=0.8.0"]
 
 [project.scripts]
-mcp-server-sentry = "mcp_server_sentry:main"
+mcp-sentry = "mcp_sentry:main"
