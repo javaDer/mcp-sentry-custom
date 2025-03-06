@@ -122,6 +122,8 @@ Add to your Zed settings.json:
 <details>
 <summary>Using uvx</summary>
 
+For Example Curson ![mcp.json](.cursor/mcp.json) 
+
 ```json
 "context_servers": [
   "mcp-sentry": {
