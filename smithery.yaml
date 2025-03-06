@@ -1,0 +1,29 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - authToken
+      - projectSlug
+      - organizationSlug
+    properties:
+      authToken:
+        type: string
+        description: Your Sentry authentication token.
+      projectSlug:
+        type: string
+        description: The slug identifier for your Sentry project.
+      organizationSlug:
+        type: string
+        description: The slug identifier for your Sentry organization.
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'mcp-sentry', args: ['--auth-token', config.authToken, '--project-slug', config.projectSlug, '--organization-slug', config.organizationSlug] })
+  exampleConfig:
+    authToken: YOUR_SENTRY_TOKEN
+    projectSlug: YOUR_PROJECT_SLUG
+    organizationSlug: YOUR_ORGANIZATION_SLUG
