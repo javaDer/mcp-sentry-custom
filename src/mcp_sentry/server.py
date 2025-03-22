@@ -4,11 +4,11 @@ from urllib.parse import urlparse
 
 import click
 import httpx
+import mcp.server.stdio
 import mcp.types as types
 from mcp.server import NotificationOptions, Server
 from mcp.server.models import InitializationOptions
 from mcp.shared.exceptions import McpError
-import mcp.server.stdio
 
 SENTRY_API_BASE = "https://sentry.io/api/0/"
 MISSING_AUTH_TOKEN_MESSAGE = (
@@ -71,8 +71,8 @@ def extract_issue_id(issue_id_or_url: str) -> str:
 
     if issue_id_or_url.startswith(("http://", "https://")):
         parsed_url = urlparse(issue_id_or_url)
-        if not parsed_url.hostname or not parsed_url.hostname.endswith(".sentry.io"):
-            raise SentryError("Invalid Sentry URL. Must be a URL ending with .sentry.io")
+        if not parsed_url.hostname:
+            raise SentryError("Invalid Sentry URL")
 
         path_parts = parsed_url.path.strip("/").split("/")
         if len(path_parts) < 2 or path_parts[0] != "issues":
@@ -140,7 +140,7 @@ def create_stacktrace(latest_event: dict) -> str:
 
 
 async def handle_sentry_issue(
-    http_client: httpx.AsyncClient, auth_token: str, issue_id_or_url: str
+        http_client: httpx.AsyncClient, auth_token: str, issue_id_or_url: str
 ) -> SentryIssueData:
     try:
         issue_id = extract_issue_id(issue_id_or_url)
@@ -189,10 +189,10 @@ async def handle_sentry_issue(
 
 
 async def handle_list_issues(
-    http_client: httpx.AsyncClient,
-    auth_token: str,
-    project_slug: str,
-    organization_slug: str
+        http_client: httpx.AsyncClient,
+        auth_token: str,
+        project_slug: str,
+        organization_slug: str
 ) -> list[SentryIssueData]:
     try:
         response = await http_client.get(
@@ -226,9 +226,9 @@ async def handle_list_issues(
         raise McpError(f"An error occurred: {str(e)}")
 
 
-async def serve(auth_token: str, project_slug: str, organization_slug: str) -> Server:
+async def serve(auth_token: str, project_slug: str, organization_slug: str, proxy_url: str) -> Server:
     server = Server("sentry")
-    http_client = httpx.AsyncClient(base_url=SENTRY_API_BASE)
+    http_client = httpx.AsyncClient(base_url=proxy_url)
 
     @server.list_prompts()
     async def handle_list_prompts() -> list[types.Prompt]:
@@ -249,7 +249,7 @@ async def serve(auth_token: str, project_slug: str, organization_slug: str) -> S
                 description="Retrieve Sentry issues by project slug",
                 arguments=[
                     types.PromptArgument(
-                        name="project_slug",        
+                        name="project_slug",
                         description="Sentry project slug",
                         required=True,
                     )
@@ -259,7 +259,7 @@ async def serve(auth_token: str, project_slug: str, organization_slug: str) -> S
 
     @server.get_prompt()
     async def handle_get_prompt(
-        name: str, arguments: dict[str, str] | None
+            name: str, arguments: dict[str, str] | None
     ) -> types.GetPromptResult:
         if name != "sentry-issue":
             raise ValueError(f"Unknown prompt: {name}")
@@ -317,14 +317,14 @@ async def serve(auth_token: str, project_slug: str, organization_slug: str) -> S
 
     @server.call_tool()
     async def handle_call_tool(
-        name: str, arguments: dict | None
+            name: str, arguments: dict | None
     ) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         if name == "get_sentry_issue":
             if not arguments or "issue_id_or_url" not in arguments:
                 raise ValueError("Missing issue_id_or_url argument")
             issue_data = await handle_sentry_issue(http_client, auth_token, arguments["issue_id_or_url"])
             return issue_data.to_tool_result()
-        
+
         elif name == "get_list_issues":
             issues = await handle_list_issues(
                 http_client,
@@ -337,11 +337,12 @@ async def serve(auth_token: str, project_slug: str, organization_slug: str) -> S
                 issue.to_text() for issue in issues
             )
             return [types.TextContent(type="text", text=combined_text)]
-        
+
         else:
             raise ValueError(f"Unknown tool: {name}")
 
     return server
+
 
 @click.command()
 @click.option(
@@ -362,10 +363,19 @@ async def serve(auth_token: str, project_slug: str, organization_slug: str) -> S
     required=True,
     help="Sentry organization slug",
 )
-def main(auth_token: str, project_slug: str, organization_slug: str):
+@click.option(
+    "--sentry_url",
+    envvar="SENTRY_URL",
+    required=False,
+    help="Sentry proxy url option",
+)
+def main(auth_token: str, project_slug: str, organization_slug: str, sentry_url: str):
+    if sentry_url is None:
+        sentry_url = SENTRY_API_BASE
+
     async def _run():
         async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
-            server = await serve(auth_token, project_slug, organization_slug)
+            server = await serve(auth_token, project_slug, organization_slug, sentry_url)
             await server.run(
                 read_stream,
                 write_stream,
