@@ -364,7 +364,8 @@ async def serve(auth_token: str, project_slug: str, organization_slug: str, prox
     help="Sentry organization slug",
 )
 @click.option(
-    "--sentry_url",
+
+    "--sentry-url",
     envvar="SENTRY_URL",
     required=False,
     help="Sentry proxy url option",

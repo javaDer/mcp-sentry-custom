@@ -1,7 +1,7 @@
 [project]
 name = "mcp-sentry-custom"
-version = "0.6.2"
-description = "MCP server for retrieving issues from sentry.io"
+version = "0.6.4"
+description = "MCP server for retrieving issues from sentry.io or self-hosted Sentry instances"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["mcp>=1.0.0"]
