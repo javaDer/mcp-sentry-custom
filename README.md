@@ -53,10 +53,10 @@ Below is a revised and polished version of the README.md for the `mcp-sentry-cus
 
 ### Installing via Smithery
 
-To install `mcp-sentry-custom` for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@qianniuspace/mcp-sentry-custom):
+To install `mcp-sentry-custom` for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@javaDer/mcp-sentry-custom):
 
 ```bash
-npx -y @smithery/cli install @qianniuspace/mcp-sentry-custom --client claude
+npx -y @smithery/cli install @javaDer/mcp-sentry-custom --client claude
 ```
 
 ### Using `uv` (Recommended)
