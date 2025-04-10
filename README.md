@@ -1,4 +1,7 @@
+English [中文](README_CN.md)
+
 Below is a revised and polished version of the README.md for the `mcp-sentry-custom` project, formatted properly for clarity, correctness, and professionalism. It adheres to standard Markdown conventions and organizes the content into logical sections.
+
 
 ---
 
